@@ -5,10 +5,14 @@ public class ATM {
         //if exitflag was raised end the program
         if (welcome()) return;
 
+        int language = language();
+        //exitflag was raised
+        if (language == 0) return;
+
+
 
 
     }
-
 
     static boolean welcome(){
         System.out.println("*Welcome to Herman Bank* \n\nPlease enter your 4 digit password:");
@@ -45,6 +49,21 @@ public class ATM {
         return exitflag;
         }
 
+        static int language(){
+            Scanner sc = new Scanner(System.in);
+            int inputint;
+            System.out.println("*Herman Bank*\n*Language*\n\nChoose your action by pressing the number\n1. English\n2. Slovak\n0. EXIT");
+
+            try {
+                inputint = sc.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Bad input you will exit.");
+                return 0;
+
+            }
+        return inputint;
+        }
 
 
 
