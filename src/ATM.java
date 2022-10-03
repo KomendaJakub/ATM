@@ -65,9 +65,33 @@ public class ATM {
         return inputint;
         }
 
+        static int menupage(int language){
+            Scanner sc = new Scanner(System.in);
+            int inputint;
+            System.out.println("menupage"); //fix this later
+
+            try {
+                inputint = sc.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Bad input you will exit.");
+                return 0;
+
+            }
+            return inputint;
+        }
+
+        static void withdraw(){
+            System.out.println("withdraw page");
 
 
-    }
+        }
+
+
+
+}
+
+
 
 
 
