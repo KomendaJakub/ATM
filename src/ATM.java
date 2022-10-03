@@ -64,14 +64,13 @@ public class ATM {
 
         if (language < 0 || language > 3) {
             System.out.println("Bad input try again");
-            language();
+            language();}
 
-            if (language == 0) {
-                exit(1);
-            }
+        if (language == 0) {
+            exit(1);
+        }
             menu(language);
         }
-    }
 
     static void menu(int language) {
         System.out.println("menupage"); //fix this later
