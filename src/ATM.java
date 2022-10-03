@@ -73,7 +73,15 @@ public class ATM {
         }
 
     static void menu(int language) {
-        System.out.println("menupage"); //fix this later
+        System.out.println("""
+                *Herman Bank*
+                *Menu*
+
+                Choose your action by pressing the number
+                1. Withdraw
+                2. Deposit
+                3. Balance Inquiry
+                0. EXIT"""); //fix this later
 
         try {
             inputint = sc.nextInt();
@@ -154,21 +162,29 @@ public class ATM {
 
 
     static void inquiry(int language){
-        System.out.println(balance);
+        System.out.printf("""
+                *Herman Bank*
+                *Balance Inquiry*
+
+                The balance is $%d
+
+                Choose your action by pressing the number
+                0. Exit
+                """,balance);
 
         try {
             inputint = sc.nextInt();
         } catch (Exception e) {
             System.out.println("Bad input try again");
             inquiry(language);
-
+        }
             if (inputint == 0) menu(language);
 
             else {
                 System.out.println("Bad input try again");
                 inquiry(language);
             }
-        }
+
     }
     }
 
