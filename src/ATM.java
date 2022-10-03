@@ -6,6 +6,7 @@ public class ATM {
         if (welcome()) return;
 
 
+
     }
 
 
@@ -15,7 +16,7 @@ public class ATM {
         String input;
         String pin="1234";
         boolean exitflag = false;
-        int inputint;
+        int inputint = 12; //Just a random number so that it compiles.
 
         for (int i=0;i<3;i++){
             input = sc.nextLine();
@@ -29,19 +30,24 @@ public class ATM {
                  try {
                      inputint = sc.nextInt();
                  } catch (Exception e) {
-                     throw new RuntimeException(e);
+                     System.out.println("Bad input, but you will exit anyway:)");
                  }
             }
-
-                if (sc.nextInt()==0){
+                if (inputint==0){
                     exitflag = true;
                     break;
+                }
+                else{
+                    System.out.println("Bad input, but you will exit anyway:)");
                 }
             System.out.println("You have entered the wrong pin, you have " +(2-i)+ " tries left");
             }
         return exitflag;
-
         }
+
+
+
+
     }
 
 
