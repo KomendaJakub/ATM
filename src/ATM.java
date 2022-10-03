@@ -1,95 +1,177 @@
 import java.util.Scanner;
 
 public class ATM {
+
+    static Scanner sc = new Scanner(System.in);
+    static int inputint;
+    static int withdrawn;
+    static int deposit;
+    static int balance = 1000;
+    static int language;
+    static boolean withdrawing;
+
     public static void main(String[] args) {
-        //if exitflag was raised end the program
-        if (welcome()) return;
-
-        int language = language();
-        //exitflag was raised
-        if (language == 0) return;
-
-
-
-
+        welcome();
     }
 
-    static boolean welcome(){
-        System.out.println("*Welcome to Herman Bank* \n\nPlease enter your 4 digit password:");
-        Scanner sc = new Scanner(System.in);
-        String input;
-        String pin="1234";
-        boolean exitflag = false;
-        int inputint = 12; //Just a random number so that it compiles.
+    static void exit(int language) {
+        System.out.println(withdrawn + deposit + (balance - withdrawn + deposit));
+    }
 
-        for (int i=0;i<3;i++){
+    static void welcome() {
+        System.out.println("*Welcome to Herman Bank* \n\nPlease enter your 4 digit password:");
+        String input;
+        String pin = "1234";
+
+        for (int i = 0; i < 3; i++) {
             input = sc.nextLine();
 
-            //Just continue main funcion
-            if (pin.equals(input)) break;
+            //Just continue to language function
+            if (pin.equals(input)) language();
 
-            //If pin is not correct the third time
-            else if (i==2) {
+                //If pin is not correct the third time
+            else if (i == 2) {
                 System.out.println("*Herman Bank*\n ALERT:\n“Invalid Access!”\n“Please contact the branch!”\n\nChoose your action by pressing the number \n0. EXIT");
-                 try {
-                     inputint = sc.nextInt();
-                 } catch (Exception e) {
-                     System.out.println("Bad input, but you will exit anyway:)");
-                 }
-            }
-                if (inputint==0){
-                    exitflag = true;
-                    break;
-                }
-                else{
+                try {
+                    inputint = sc.nextInt();
+                } catch (Exception e) {
                     System.out.println("Bad input, but you will exit anyway:)");
                 }
-            System.out.println("You have entered the wrong pin, you have " +(2-i)+ " tries left");
+
+                if (inputint == 0) break;
+
+                else {
+                    System.out.println("Bad input, but you will exit anyway:)");
+                    break;
+                }
             }
-        return exitflag;
+            System.out.println("You have entered the wrong pin, you have " + (2 - i) + " tries left");
+        }
+        //if we reach this it just terminates the program.
+    }
+
+    static void language() {
+        System.out.println("*Herman Bank*\n*Language*\n\nChoose your action by pressing the number\n1. English\n2. Slovak\n0. EXIT");
+
+        try {
+            inputint = sc.nextInt();
+            language = inputint;
+           // System.out.println("toto je jazyk "+language);
+        } catch (Exception e) {
+            System.out.println("Bad input try again");
+            language();
         }
 
-        static int language(){
-            Scanner sc = new Scanner(System.in);
-            int inputint;
-            System.out.println("*Herman Bank*\n*Language*\n\nChoose your action by pressing the number\n1. English\n2. Slovak\n0. EXIT");
+        if (language < 0 || language > 3) {
+            System.out.println("Bad input try again");
+            language();
 
-            try {
-                inputint = sc.nextInt();
+            if (language == 0) {
+                exit(1);
             }
-            catch (Exception e) {
-                System.out.println("Bad input you will exit.");
-                return 0;
+            menu(language);
+        }
+    }
 
-            }
-        return inputint;
+    static void menu(int language) {
+        System.out.println("menupage"); //fix this later
+
+        try {
+            inputint = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("Bad input try again");
+            menu(language);
         }
 
-        static int menupage(int language){
-            Scanner sc = new Scanner(System.in);
-            int inputint;
-            System.out.println("menupage"); //fix this later
+        if (inputint < 0 || inputint > 3) {
+            System.out.println("Bad input try again");
+            menu(language);
+        }
 
-            try {
-                inputint = sc.nextInt();
-            }
-            catch (Exception e) {
-                System.out.println("Bad input you will exit.");
-                return 0;
+        switch (inputint) {
+            case 0:
+                exit(language);
 
-            }
+            case 1:
+                balance = balance - withdraw(language);
+
+            case 2:
+                balance = balance + deposit(language);
+
+            case 3:
+                inquiry(language);
+        }
+    }
+
+    static int withdraw(int language) {
+        System.out.println("withdraw page");
+        withdrawing=true;
+        try {
+            inputint = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("Bad input try again");
+            return withdraw(language);
+        }
+        if (!(inputint>balance))
             return inputint;
+        else
+            return invalidentry(language,withdrawing);
+    }
+
+    static int deposit(int language) {
+        System.out.println("deposit page");
+        withdrawing =false;
+        try {
+            inputint = sc.nextInt();
         }
-
-        static void withdraw(){
-            System.out.println("withdraw page");
-
-
+        catch (Exception e) {
+            System.out.println("Bad input try again");
+            return deposit(language);
         }
+        if (!(inputint<=0))
+            return inputint;//fix me pls
+        else
+            return invalidentry(language,withdrawing);
+    }
+
+        static int invalidentry(int language, boolean withdrawing){
+            System.out.println("invalid Entry");
+            try{
+                inputint =sc.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Bad input try again");
+                return invalidentry(language, withdrawing);
+            }
+
+            if (inputint ==0 && withdrawing) return withdraw(language);
+            else if (inputint ==0) return deposit(language);
+            else {
+                System.out.println("Bad input, try again");
+                return invalidentry(language,withdrawing);
+            }
+            }
 
 
 
-}
+    static void inquiry(int language){
+        System.out.println(balance);
+
+        try {
+            inputint = sc.nextInt();
+        } catch (Exception e) {
+            System.out.println("Bad input try again");
+            inquiry(language);
+
+            if (inputint == 0) menu(language);
+
+            else {
+                System.out.println("Bad input try again");
+                inquiry(language);
+            }
+        }
+    }
+    }
 
 
 
