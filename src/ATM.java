@@ -9,13 +9,41 @@ public class ATM {
     static int balance = 1000;
     static int language;
     static boolean withdrawing;
+    static int counter;
+    static int number;
 
     public static void main(String[] args) {
         welcome();
     }
 
     static void exit(int language) {
-        System.out.println(withdrawn + deposit + (balance - withdrawn + deposit));
+        System.out.println();
+        if (language==1) System.out.printf("""
+*Herman Bank*
+*Exit*
+
+Total Amount of withdraw is $%d
+Total Amount of deposit is $%d
+The new balance is $%d
+
+“Good Bye”
+
+“Thanks for choosing Herman Bank. See you soon.”
+                """,withdrawn,deposit,balance);
+        else System.out.printf("""
+*Herman Bank*
+*VÝCHOD*
+
+Celková suma výberu je $%d
+Celková výška vkladu je %d $
+Nový zostatok je %d $
+
+"Zbohom"
+
+„Ďakujeme, že ste si vybrali Herman Bank. Do skorého videnia.”
+                 """,withdrawn,deposit,balance);
+
+        System.exit(0);
     }
 
     static void welcome() {
@@ -73,6 +101,7 @@ public class ATM {
         }
 
     static void menu(int language) {
+        if (language==1)
         System.out.println("""
                 *Herman Bank*
                 *Menu*
@@ -81,17 +110,33 @@ public class ATM {
                 1. Withdraw
                 2. Deposit
                 3. Balance Inquiry
-                0. EXIT"""); //fix this later
+                0. EXIT""");
+        else System.out.println("""
+                 *Herman Bank*
+                 *Ponuka*
+                                
+                 Vyberte svoju akciu stlačením čísla
+                 1. Odstúpiť
+                 2. Záloha
+                 3. Vyšetrovanie zostatku
+                 0. VÝSTUP
+                """);
 
         try {
             inputint = sc.nextInt();
         } catch (Exception e) {
-            System.out.println("Bad input try again");
+            if (language==1)
+                System.out.println("Bad input try again");
+            else
+                System.out.println("Zlý vstup, skúste to znova");
             menu(language);
         }
 
         if (inputint < 0 || inputint > 3) {
-            System.out.println("Bad input try again");
+            if (language==1)
+                System.out.println("Bad input try again");
+            else
+                System.out.println("Zlý vstup, skúste to znova");
             menu(language);
         }
 
@@ -100,61 +145,162 @@ public class ATM {
                 exit(language);
 
             case 1:
-                balance = balance - withdraw(language);
+                counter = withdraw(language);
+                withdrawn+=counter;
+                balance = balance - counter;
+                menu(language);
 
             case 2:
-                balance = balance + deposit(language);
+                counter = deposit(language);
+                deposit+=counter;
+                balance = balance + counter;
+                menu(language);
 
             case 3:
                 inquiry(language);
+                menu(language);
         }
     }
 
     static int withdraw(int language) {
-        System.out.println("withdraw page");
+
+        if (language==1)
+        System.out.print("""
+                *Herman Bank*
+                *Withdraw*
+                                
+                Enter the amount you want to withdraw ($)
+                $""");
+        else
+            System.out.print("""
+                 *Herman Bank*
+                 *Vybrať*
+                                
+                 Zadajte sumu, ktorú chcete vybrať ($)
+                 $""");
+
         withdrawing=true;
         try {
             inputint = sc.nextInt();
         } catch (Exception e) {
+            if (language==1)
             System.out.println("Bad input try again");
+            else System.out.println("Zlý vstup, skúste to znova");
+
             return withdraw(language);
         }
-        if (!(inputint>balance))
+        if (language==1)
+        System.out.println("""
+                Choose your action by pressing the number
+                0. Exit
+                """);
+        else System.out.println("""
+                 Vyberte svoju akciu stlačením čísla
+                 0. Výstup
+                 """);
+
+        try {number= sc.nextInt();}
+        catch (Exception e){
+            if (language==1)
+                System.out.println("Bad input, but you will exit anyway:)");
+            else System.out.println("Zlý vstup, ale aj tak odídeš :)");
+        }
+        if ((number != 0)&&language==1){System.out.println("Bad entry but it will execute anyway :)");}
+        else if (number!=0){
+            System.out.println("Zlý vstup, ale aj tak sa to vykoná :)");
+        }
+        if (inputint<=balance&&inputint>=0)
             return inputint;
         else
             return invalidentry(language,withdrawing);
-    }
+        }
 
     static int deposit(int language) {
-        System.out.println("deposit page");
+        if (language==1)
+        System.out.print("""
+                *Herman Bank*
+                *Deposit*
+                                
+                Enter the amount you want to deposit ($)
+                $
+                """);
+
+        else System.out.println("""
+                 *Herman Bank*
+                 *Záloha*
+                                
+                 Zadajte sumu, ktorú chcete vložiť ($)
+                 $
+                 """);
+
         withdrawing =false;
         try {
             inputint = sc.nextInt();
         }
         catch (Exception e) {
-            System.out.println("Bad input try again");
+            if (language==1)  System.out.println("Bad input try again");
+            else System.out.println("Zlý vstup, skúste to znova");
             return deposit(language);
         }
+        if (language==1) System.out.println("""
+                Choose your action by pressing the number
+                0. Exit
+                """);
+        else System.out.println("""
+                 Vyberte svoju akciu stlačením čísla
+                 0. Výstup
+                 """);
+
+        try {number=sc.nextInt();}
+        catch (Exception e){
+            if (language==1) System.out.println("Bad input, but you will exit anyway:)");
+            else System.out.println("Zlý vstup, ale aj tak odídeš :)");
+        }
+        if (!(number==0))
+            if (language==1) System.out.println("Bad input, but it will execute anyway :)");
+            else System.out.println("Zlý vstup, ale aj tak sa to vykoná :)");
         if (!(inputint<=0))
-            return inputint;//fix me pls
+            return inputint;
         else
             return invalidentry(language,withdrawing);
+
     }
 
         static int invalidentry(int language, boolean withdrawing){
-            System.out.println("invalid Entry");
+            if (language==1) System.out.println("""
+                                  *Herman Bank*
+                                  
+                                  ALERT:
+                                  “Invalid Entry!”
+                                  
+                                  Choose your action by pressing the number
+                                  0. Go Back
+                                  """);
+
+            else System.out.println("""
+                                   *Herman Bank*
+                                  
+                                   UPOZORNENIE:
+                                   “Neplatný záznam!”
+                                  
+                                   Vyberte svoju akciu stlačením čísla
+                                   0. Vráťte sa späť
+                                   """);
+
             try{
                 inputint =sc.nextInt();
             }
             catch (Exception e) {
-                System.out.println("Bad input try again");
+                if (language==1) System.out.println("Bad input try again");
+                else System.out.println("Zlý vstup, skúste to znova");
+
                 return invalidentry(language, withdrawing);
             }
-
             if (inputint ==0 && withdrawing) return withdraw(language);
             else if (inputint ==0) return deposit(language);
             else {
-                System.out.println("Bad input, try again");
+                if (language==1) System.out.println("Bad input try again");
+                else System.out.println("Zlý vstup, skúste to znova");
                 return invalidentry(language,withdrawing);
             }
             }
@@ -162,7 +308,7 @@ public class ATM {
 
 
     static void inquiry(int language){
-        System.out.printf("""
+        if (language==1) System.out.printf("""
                 *Herman Bank*
                 *Balance Inquiry*
 
@@ -171,17 +317,28 @@ public class ATM {
                 Choose your action by pressing the number
                 0. Exit
                 """,balance);
+        else System.out.printf("""
+                 *Herman Bank*
+                 *Dopyt na zostatok*
+
+                 Zostatok je %d $
+
+                 Vyberte svoju akciu stlačením čísla
+                 0. Výstup
+                 """,balance);
 
         try {
             inputint = sc.nextInt();
         } catch (Exception e) {
-            System.out.println("Bad input try again");
+            if (language==1) System.out.println("Bad input try again");
+            else System.out.println("Zlý vstup, skúste to znova");
             inquiry(language);
         }
             if (inputint == 0) menu(language);
 
             else {
-                System.out.println("Bad input try again");
+                if (language==1) System.out.println("Bad input try again");
+                else System.out.println("Zlý vstup, skúste to znova");
                 inquiry(language);
             }
 
