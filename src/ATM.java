@@ -30,7 +30,7 @@ public class ATM {
 
                 if (sc.nextInt()==0);
             }
-            System.out.println("You have entered the wrong pin, you have " +(2-i)+ " tries left");
+            System.out.println("ou have entered the wrong pin, you have " +(2-i)+ " tries left");
         }
     }
 
